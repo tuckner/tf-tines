@@ -35,6 +35,10 @@ func resourceTinesCredential() *schema.Resource {
 				Type:     schema.TypeInt,
 				Optional: true,
 			},
+			"read_access": {
+				Type:     schema.TypeString,
+				Optional: true,
+			},
 			"value": {
 				Type:     schema.TypeString,
 				Optional: true,
@@ -129,6 +133,7 @@ func resourceTinesCredentialCreate(d *schema.ResourceData, meta interface{}) err
 	mode := d.Get("mode").(string)
 	teamID := d.Get("team_id").(int)
 	folderID := d.Get("folder_id").(int)
+	readAccess := d.Get("read_access").(string)
 	value := d.Get("value").(string)
 	jwtAlgorithm := d.Get("jwt_algorithm").(string)
 	jwtPayload := d.Get("jwt_payload").(string)
@@ -158,6 +163,7 @@ func resourceTinesCredentialCreate(d *schema.ResourceData, meta interface{}) err
 		Mode:                       mode,
 		TeamID:                     teamID,
 		FolderID:                   folderID,
+		ReadAccess:                 readAccess,
 		Value:                      value,
 		JWTAlgorithm:               jwtAlgorithm,
 		JWTPayload:                 jwtPayload,
@@ -210,6 +216,7 @@ func resourceTinesCredentialRead(d *schema.ResourceData, meta interface{}) error
 	d.Set("mode", credential.Mode)
 	d.Set("folder_id", credential.FolderID)
 	d.Set("team_id", credential.TeamID)
+	d.Set("read_access", credential.ReadAccess)
 	d.Set("value", credential.Value)
 	d.Set("jwt_algorithm", credential.JWTAlgorithm)
 	d.Set("jwt_payload", credential.JWTPayload)
@@ -257,6 +264,7 @@ func resourceTinesCredentialUpdate(d *schema.ResourceData, meta interface{}) err
 	mode := d.Get("mode").(string)
 	teamID := d.Get("team_id").(int)
 	folderID := d.Get("folder_id").(int)
+	readAccess := d.Get("read_access").(string)
 	value := d.Get("value").(string)
 	jwtAlgorithm := d.Get("jwt_algorithm").(string)
 	jwtPayload := d.Get("jwt_payload").(string)
@@ -284,6 +292,7 @@ func resourceTinesCredentialUpdate(d *schema.ResourceData, meta interface{}) err
 		Mode:                       mode,
 		TeamID:                     teamID,
 		FolderID:                   folderID,
+		ReadAccess:                 readAccess,
 		Value:                      value,
 		JWTAlgorithm:               jwtAlgorithm,
 		JWTPayload:                 jwtPayload,
@@ -320,6 +329,7 @@ func resourceTinesCredentialUpdate(d *schema.ResourceData, meta interface{}) err
 	d.Set("mode", credential.Mode)
 	d.Set("folder_id", credential.FolderID)
 	d.Set("team_id", credential.TeamID)
+	d.Set("read_access", credential.ReadAccess)
 	d.Set("value", credential.Value)
 	d.Set("jwt_algorithm", credential.JWTAlgorithm)
 	d.Set("jwt_payload", credential.JWTPayload)

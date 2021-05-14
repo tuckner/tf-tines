@@ -23,6 +23,10 @@ func resourceTinesGlobalResource() *schema.Resource {
 				Type:     schema.TypeString,
 				Optional: true,
 			},
+			"read_access": {
+				Type:     schema.TypeString,
+				Optional: true,
+			},
 			"value": {
 				Type:     schema.TypeString,
 				Optional: true,
@@ -47,6 +51,7 @@ func resourceTinesGlobalResourceCreate(d *schema.ResourceData, meta interface{})
 
 	name := d.Get("name").(string)
 	valueType := d.Get("value_type").(string)
+	readAccess := d.Get("read_access").(string)
 	value := d.Get("value").(string)
 	teamID := d.Get("team_id").(int)
 	folderID := d.Get("folder_id").(int)
@@ -54,11 +59,12 @@ func resourceTinesGlobalResourceCreate(d *schema.ResourceData, meta interface{})
 	tinesClient := meta.(*tines.Client)
 
 	gr := tines.GlobalResource{
-		Name:      name,
-		ValueType: valueType,
-		Value:     value,
-		TeamID:    teamID,
-		FolderID:  folderID,
+		Name:       name,
+		ValueType:  valueType,
+		ReadAccess: readAccess,
+		Value:      value,
+		TeamID:     teamID,
+		FolderID:   folderID,
 	}
 
 	globalresource, _, err := tinesClient.GlobalResource.Create(&gr)
@@ -89,6 +95,7 @@ func resourceTinesGlobalResourceRead(d *schema.ResourceData, meta interface{}) e
 	d.Set("name", globalresource.Name)
 	d.Set("value", globalresource.Value)
 	d.Set("value_type", globalresource.ValueType)
+	d.Set("read_access", globalresource.ReadAccess)
 	d.Set("team_id", globalresource.TeamID)
 	d.Set("folder_id", globalresource.FolderID)
 	d.Set("global_resource_id", globalresource.ID)
@@ -115,17 +122,19 @@ func resourceTinesGlobalResourceUpdate(d *schema.ResourceData, meta interface{})
 
 	name := d.Get("name").(string)
 	valueType := d.Get("value_type").(string)
+	readAccess := d.Get("read_access").(string)
 	value := d.Get("value").(string)
 	teamID := d.Get("team_id").(int)
 	folderID := d.Get("folder_id").(int)
 	grid, _ := strconv.ParseInt(d.Id(), 10, 32)
 
 	gr := tines.GlobalResource{
-		Name:      name,
-		ValueType: valueType,
-		Value:     value,
-		TeamID:    teamID,
-		FolderID:  folderID,
+		Name:       name,
+		ValueType:  valueType,
+		ReadAccess: readAccess,
+		Value:      value,
+		TeamID:     teamID,
+		FolderID:   folderID,
 	}
 
 	globalresource, _, err := tinesClient.GlobalResource.Update(int(grid), &gr)
@@ -139,6 +148,7 @@ func resourceTinesGlobalResourceUpdate(d *schema.ResourceData, meta interface{})
 	d.Set("name", globalresource.Name)
 	d.Set("value", globalresource.Value)
 	d.Set("value_type", globalresource.ValueType)
+	d.Set("read_access", globalresource.ReadAccess)
 	d.Set("folder_id", globalresource.FolderID)
 	d.Set("grid", globalresource.ID)
 
